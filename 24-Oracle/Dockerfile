@@ -6,10 +6,10 @@
 FROM ubuntu:22.04
 
 ARG TARGETPLATFORM
-ARG GRAAL_VERSION=23.0.0
-ARG JAVA_VERSION=23
+# ARG GRAAL_VERSION=23.0.0
+ARG JAVA_VERSION=24
 
-MAINTAINER RikoDEV, <kontakt@riko.dev>
+MAINTAINER Rabbydevs, <rabbydevs@gmail.com>
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -24,7 +24,7 @@ RUN apt-get update -y \
          "linux/amd64")  ARCH=x64  ;; \
          "linux/arm64")  ARCH=aarch64  ;; \
     esac \
-  && curl --retry 3 -Lfso /tmp/graalvm.tar.gz https://download.oracle.com/graalvm/24/latest/graalvm-jdk-24_linux-x64_bin.tar.gz \
+  && curl --retry 3 -Lfso /tmp/graalvm.tar.gz https://mcfiles.starfall-studios.com/files/Oracle-GraalVM-${JAVA_VERSION}.tar.gz \
   && mkdir -p /opt/java/graalvm \
   && cd /opt/java/graalvm \
   && tar -xf /tmp/graalvm.tar.gz --strip-components=1 \

@@ -24,6 +24,7 @@ jobs:
           - 23-JDK
           - 11-EE
           - 17-EE
+          - 24-Oracle
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -43,16 +44,16 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Docker meta
-      #   id: meta_graalvm
-      #   uses: docker/metadata-action@v4
-      #   with:
-      #     # list of Docker images to use as base name for tags
-      #     images: |
-      #       ghcr.io/rikodev/pterodactyl-graalvm
-      #     # generate Docker tags based on the following events/attributes
-      #     tags: |
-      #       type=raw,${{ matrix.tag }}
+      - name: Docker meta
+        id: meta_graalvm
+        uses: docker/metadata-action@v4
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ghcr.io/rabbydevs/pterodactyl-graalvm
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=raw,${{ matrix.tag }}
             
       - name: Build and push
         uses: docker/build-push-action@v3
@@ -61,5 +62,5 @@ jobs:
           file: ./${{ matrix.tag }}/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          # tags: ${{ steps.meta_graalvm.outputs.tags }}
-          # labels: ${{ steps.meta_graalvm.outputs.labels }}
+          tags: ${{ steps.meta_graalvm.outputs.tags }}
+          labels: ${{ steps.meta_graalvm.outputs.labels }}
